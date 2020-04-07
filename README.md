@@ -2,7 +2,6 @@
 # cinema_movies
 movies and preferences for users clients A 
 =======
-# movies_flutter
 
 A new Flutter project.
 
