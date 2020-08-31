@@ -11,14 +11,15 @@ class _MenuProvider {
 //  El hot Reload no hace una nueva instancia
 //    si se hace hot restart si funciona
 
-    cargarData();
+    // cargarData();
   }
 
-  void cargarData() {
-    rootBundle.loadString('data/menu.json').then((data) {
-      Map dataMap = json.decode(data);
-      print(dataMap);
-    });
+   Future<List<dynamic>> cargarData() async{
+    final resp = await rootBundle.loadString('data/movies.json');
+    Map dataMap = json.decode(resp);
+    print(dataMap['items']);
+    options = dataMap['items'];
+    return options;
   }
 }
 

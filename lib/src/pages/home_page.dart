@@ -26,6 +26,24 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _swiperTarjetas() {
+
+    FutureBuilder(
+      future: menuProvider.cargarData(),
+      initialData: [],
+      builder: (context, AsyncSnapshot<List<dynamic>> snapshot){
+    
+          return Container(
+          // color: Colors.white,
+  //      padding: EdgeInsets.only(top: 4.0),
+          width: double.infinity,
+          height: 250,
+          child: ListView(
+            children: _listaItems(snapshot.data),
+          )
+      );
+      },
+    );
+    
     return Container(
       color: Color(0xFFFFFDE7),
       padding: EdgeInsets.only(top: 10.0),
@@ -34,10 +52,15 @@ class HomePage extends StatelessWidget {
       child: new Swiper(
         layout: SwiperLayout.STACK,
         itemBuilder: (BuildContext context, int index) {
+
+          
           return new Image.network(
             "http://via.placeholder.com/350x150",
-            fit: BoxFit.cover,
+            fit: BoxFit.fill,
           );
+
+         
+          
         },
         itemCount: 3,
         itemWidth: 200.0,
@@ -53,16 +76,41 @@ class HomePage extends StatelessWidget {
 //  }
 
   Widget _lista(BuildContext context) {
-    print(menuProvider.options);
-    return Container(
-        color: Color(0xFFFFA000),
-//      padding: EdgeInsets.only(top: 4.0),
-        width: double.infinity,
-        height: 250,
-        child: ListView(
-          children: _listaItems(),
-        )
+    // print(menuProvider.options);
+
+
+    // menuProvider.cargarData().then((opciones){
+    //   print('_lista');
+    //   print(opciones);
+    // });
+
+    
+    return FutureBuilder(
+      future: menuProvider.cargarData(),
+      initialData: [],
+      builder: (context, AsyncSnapshot<List<dynamic>> snapshot){
+    
+          return Container(
+          // color: Colors.white,
+  //      padding: EdgeInsets.only(top: 4.0),
+          width: double.infinity,
+          height: 250,
+          child: ListView(
+            children: _listaItems(snapshot.data),
+          )
+      );
+      },
     );
+    
+//     return Container(
+//         color: Color(0xFFFFA000),
+// //      padding: EdgeInsets.only(top: 4.0),
+//         width: double.infinity,
+//         height: 250,
+//         child: ListView(
+//           children: _listaItems(),
+//         )
+//     );
 
 //    return Container(
 //      width: double.infinity,
@@ -73,14 +121,31 @@ class HomePage extends StatelessWidget {
 //    );
   }
 
-  List<Widget> _listaItems() {
-    return [
-      ListTile(title: Text("Hola Mundow 1")),
-      Divider(),
-      ListTile(title: Text("Hola Mundow 1")),
-      Divider(),
-      ListTile(title: Text("Hola Mundow 1")),
-      Divider(),
-    ];
+  List<Widget> _listaItems(List<dynamic> data) {
+    // return [
+    //   ListTile(title: Text("Hola Mundow 1")),
+    //   Divider(),
+    //   ListTile(title: Text("Hola Mundow 1")),
+    //   Divider(),
+    //   ListTile(title: Text("Hola Mundow 1")),
+    //   Divider(),
+    // ];
+
+    final List<Widget> opciones = [];
+    data.forEach((opt){
+      final widgetTemp = ListTile(
+        title: Text(opt['original_title']),
+        leading: Icon(Icons.account_box, color: Colors.blue),
+        trailing: Icon(Icons.keyboard_arrow_right, color: Colors.blueGrey),
+        onTap: (){
+
+        },
+      );
+      opciones..add(widgetTemp)
+              ..add(Divider());
+    });
+
+    return opciones;
   }
+  
 }
